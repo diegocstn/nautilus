@@ -2,9 +2,9 @@ import SourceFileFactory from "../src/SourceFileFactory";
 
 describe("SourceFileFactory", () => {
   it("should parse a default ImportDeclaration", () => {
-    const srcDefaultImport =
+    const src =
       `import NodeModule from "awesome_node_module_dependecy";\nimport LocalModule from "./local_module";`;
-    expect(SourceFileFactory.parseFile("./module/local-module.js", srcDefaultImport)).toEqual({
+    expect(SourceFileFactory.parseFile("./module/local-module.js", src)).toEqual({
       name: "local-module.js",
       path: "./module/local-module.js",
       imports: [
@@ -34,10 +34,10 @@ describe("SourceFileFactory", () => {
   });
 
   it("should parse a multiple specifier ImportDeclaration", () => {
-    const srcDefaultImport =
+    const src =
       `import { fn1 } from "awesome_node_module_dependecy";\n` +
       `import { concat, pick } from "./local_module";`;
-    expect(SourceFileFactory.parseFile("./module/local-module.js", srcDefaultImport)).toEqual({
+    expect(SourceFileFactory.parseFile("./module/local-module.js", src)).toEqual({
       name: "local-module.js",
       path: "./module/local-module.js",
       imports: [
@@ -70,6 +70,38 @@ describe("SourceFileFactory", () => {
           isDefault: false,
           external: false,
           source: "./local_module",
+        },
+      ],
+      exports: [],
+    });
+  });
+
+  it("should parse a multiple specifier ImportDeclaration", () => {
+    const src =
+      `import moduleName, { fn1 } from "awesome_node_module_dependecy";`;
+    expect(SourceFileFactory.parseFile("./module/local-module.js", src)).toEqual({
+      name: "local-module.js",
+      path: "./module/local-module.js",
+      imports: [
+        {
+          name: "moduleName",
+          location: {
+            line: 1,
+            col: 0,
+          },
+          isDefault: true,
+          external: false,
+          source: "awesome_node_module_dependecy",
+        },
+        {
+          name: "fn1",
+          location: {
+            line: 1,
+            col: 0,
+          },
+          isDefault: false,
+          external: false,
+          source: "awesome_node_module_dependecy",
         },
       ],
       exports: [],
