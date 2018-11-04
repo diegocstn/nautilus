@@ -8,7 +8,7 @@ import traverse, { NodePath } from "@babel/traverse";
 import path from "path";
 
 import { ExportDecl, ImportDecl } from "./ImportExportDecl";
-import ISouceFile from "./ISouceFile";
+import ISouceFile from "./SouceFile";
 
 const getImportNames = (babelNode: ImportDeclaration): string[] => {
   return babelNode.specifiers.map((value) => value.local.name);

@@ -1,4 +1,4 @@
-import ISourceLocation from "./ISourceLocation";
+import ISourceLocation from "./SourceLocation";
 
 export interface ImportDecl {
   name: string;

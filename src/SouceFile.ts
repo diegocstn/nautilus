@@ -1,6 +1,6 @@
 import { ExportDecl, ImportDecl } from "./ImportExportDecl";
 
-export default interface ISouceFile {
+export default interface SouceFile {
   path: string;
   name: string;
   exports: ExportDecl[];
