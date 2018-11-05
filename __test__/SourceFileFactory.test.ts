@@ -1,10 +1,13 @@
 import SourceFileFactory from "../src/SourceFileFactory";
 
 describe("SourceFileFactory", () => {
+
+  const extDependencies = new Set(["awesome_node_module_dependecy"]);
+
   it("should parse a default ImportDeclaration", () => {
     const src =
       `import NodeModule from "awesome_node_module_dependecy";\nimport LocalModule from "./local_module";`;
-    expect(SourceFileFactory.parseFile("./module/local-module.js", src)).toEqual({
+    expect(SourceFileFactory.parseFile("./module/local-module.js", src, extDependencies)).toEqual({
       name: "local-module.js",
       path: "./module/local-module.js",
       imports: [
@@ -15,7 +18,7 @@ describe("SourceFileFactory", () => {
             col: 0,
           },
           isDefault: true,
-          external: false,
+          external: true,
           source: "awesome_node_module_dependecy",
         },
         {
@@ -37,7 +40,7 @@ describe("SourceFileFactory", () => {
     const src =
       `import { fn1 } from "awesome_node_module_dependecy";\n` +
       `import { concat, pick } from "./local_module";`;
-    expect(SourceFileFactory.parseFile("./module/local-module.js", src)).toEqual({
+    expect(SourceFileFactory.parseFile("./module/local-module.js", src, extDependencies)).toEqual({
       name: "local-module.js",
       path: "./module/local-module.js",
       imports: [
@@ -48,7 +51,7 @@ describe("SourceFileFactory", () => {
             col: 0,
           },
           isDefault: false,
-          external: false,
+          external: true,
           source: "awesome_node_module_dependecy",
         },
         {
@@ -79,7 +82,7 @@ describe("SourceFileFactory", () => {
   it("should parse a multiple specifier ImportDeclaration", () => {
     const src =
       `import moduleName, { fn1 } from "awesome_node_module_dependecy";`;
-    expect(SourceFileFactory.parseFile("./module/local-module.js", src)).toEqual({
+    expect(SourceFileFactory.parseFile("./module/local-module.js", src, extDependencies)).toEqual({
       name: "local-module.js",
       path: "./module/local-module.js",
       imports: [
@@ -90,7 +93,7 @@ describe("SourceFileFactory", () => {
             col: 0,
           },
           isDefault: true,
-          external: false,
+          external: true,
           source: "awesome_node_module_dependecy",
         },
         {
@@ -100,7 +103,7 @@ describe("SourceFileFactory", () => {
             col: 0,
           },
           isDefault: false,
-          external: false,
+          external: true,
           source: "awesome_node_module_dependecy",
         },
       ],

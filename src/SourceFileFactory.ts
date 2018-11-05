@@ -23,7 +23,7 @@ const getImportNames = (babelNode: ImportDeclaration): ImportSpecifier[] => {
   }));
 };
 
-const parseFile = (filePath: string, source: string): ISouceFile => {
+const parseFile = (filePath: string, source: string, extDependencies: Set<string>): ISouceFile => {
   const ast = parse(source, {
     plugins: ["typescript", "jsx"],
     sourceType: "module",
@@ -45,7 +45,7 @@ const parseFile = (filePath: string, source: string): ISouceFile => {
             col: locationStart.column,
           },
           source: node.source.value,
-          external: false, // TODO is an external dependency?
+          external: extDependencies.has(node.source.value),
           isDefault,
         })),
       );
